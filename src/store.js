@@ -1,12 +1,18 @@
 import { createStore } from "redux";
 
-const initialState = {
+const initialStateAccount = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
 };
 
-function reducer(state = initialState, action) {
+const initialStateCostumer = {
+  fullName: "",
+  nationalID: "",
+  createdAt: "",
+};
+
+function accountReducer(state = initialStateAccount, action) {
   switch (action.type) {
     case "account/deposit":
       return { ...state, balance: state.balance + action.payload };
@@ -32,7 +38,22 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer);
+function customerReducer(state = initialStateCostumer, action) {
+  switch (action.type) {
+    case "customer/createCustomer":
+      return {
+        ...state,
+        fullName: action.payload.fullName,
+        nationalID: action.payload.nationalID,
+        createdAt: action.payload.createdAt,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const store = createStore(accountReducer);
 // store.dispatch({ type: "account/deposit", payload: 500 });
 // store.dispatch({ type: "account/withdraw", payload: 200 });
 // store.dispatch({
@@ -48,13 +69,11 @@ function deposit(amount) {
 store.dispatch(deposit(500));
 console.log(store.getState());
 
-
 function withdraw(amount) {
   return { type: "account/withdraw", payload: amount };
 }
 store.dispatch(withdraw(200));
 console.log(store.getState());
-
 
 function requestLoan(amount, purpose) {
   return { type: "account/requestLoan", payload: { amount, purpose } };
@@ -62,9 +81,19 @@ function requestLoan(amount, purpose) {
 store.dispatch(requestLoan(1000, "Buy a cheap car"));
 console.log(store.getState());
 
-
 function payLoan() {
-  return {type: "account/payLoan"};
+  return { type: "account/payLoan" };
 }
 store.dispatch(payLoan());
 console.log(store.getState());
+
+function createCostumer(fullName, nationalID) {
+  return {
+    type: "customer/createCostumer",
+    payload: { fullName, nationalID, createdAt: new Date().toISOString() },
+  };
+}
+
+function updateName(fullName) {
+  return { type: "account/updateName", payload: fullName };
+}
