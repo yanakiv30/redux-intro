@@ -8,7 +8,11 @@ const initialStateAccount = {
 export default function accountReducer(state = initialStateAccount, action) {
   switch (action.type) {
     case "account/deposit":
-      return { ...state, balance: state.balance + action.payload,isLoading:false };
+      return {
+        ...state,
+        balance: state.balance + action.payload,
+        isLoading: false,
+      };
     case "account/withdraw":
       return { ...state, balance: state.balance - action.payload };
     case "account/requestLoan":
@@ -44,7 +48,7 @@ export function deposit(amount, currency) {
     );
     const data = await res.json();
     const converted = data.rates.USD;
-    dispatch();
+    dispatch({ type: "account/deposit", payload: converted });
   };
 }
 
