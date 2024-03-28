@@ -42,7 +42,7 @@ const accountSlice = createSlice({
 
   },
 });
-
+console.log(accountSlice);
 export const { payLoan, requestLoan, withdraw } = accountSlice.actions;
 
 export function deposit(amount, currency) {
